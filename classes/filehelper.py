@@ -11,12 +11,11 @@ class FileReader:
     def __init__(self, dir):
         self.dir = dir
 
-
-    def getFiles(self, dir):
+    def get_files(self, dir):
         for filename in os.listdir(dir):
             fn = dir+'/'+filename
             if os.path.isdir(fn):
-                self.getFiles(fn)
+                self.get_files(fn)
 
             if os.path.isfile(fn):
                 if fn.endswith('.php'):
@@ -24,7 +23,8 @@ class FileReader:
 
         return self.files
 
-    def getTranslations(self, files):
+    @staticmethod
+    def get_translations(files):
         translations = []
         for file in files:
             with open(file, 'r') as content_file:
@@ -37,6 +37,7 @@ class FileReader:
 
         return translations
 
-    def arrayAsPhp(self, array):
+    @staticmethod
+    def array_as_php(array):
         for item in array:
             print(item+' => '+item)

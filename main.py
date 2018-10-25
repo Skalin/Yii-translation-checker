@@ -1,9 +1,9 @@
 import sys, getopt
-from sample.filehelper import FileReader
+from classes.filehelper import FileReader
 
 
 def main(argv):
-    dir = ''
+    directory = ''
     try:
         opts, args = getopt.getopt(argv, "d:", ["dir="])
     except getopt.GetoptError:
@@ -11,13 +11,13 @@ def main(argv):
         sys.exit(2)
     for opt, arg in opts:
         if opt in ("-d", "--dir"):
-            dir = arg
+            directory = arg
 
-    fr = FileReader(dir)
-    files = fr.getFiles(fr.dir)
-    translations = fr.getTranslations(files)
+    fr = FileReader(directory)
+    files = fr.get_files(fr.dir)
+    translations = fr.get_translations(files)
 
-    fr.arrayAsPhp(translations)
+    fr.array_as_php(translations)
     exit(0)
 
 
