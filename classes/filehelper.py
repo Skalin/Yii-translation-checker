@@ -40,4 +40,4 @@ class FileReader:
     @staticmethod
     def array_as_php(array):
         for item in array:
-            print(item+' => '+item)
+            print('\''+item+'\''+' => '+'\''+item+'\'')
