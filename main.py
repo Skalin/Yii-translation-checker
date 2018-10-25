@@ -2,7 +2,6 @@ import sys, getopt
 from sample.filehelper import FileReader
 
 
-
 def main(argv):
     dir = ''
     try:
@@ -20,9 +19,6 @@ def main(argv):
 
     fr.arrayAsPhp(translations)
     exit(0)
-
-
-
 
 
 if __name__ == "__main__":
