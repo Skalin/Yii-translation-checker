@@ -1,19 +1,28 @@
 import os
 import re
-
-translation_string = 'Yii::t(\'app\', \''
+from classes.common import Common
 
 
 class FileReader:
 
     files = []
+    translation_string = ''
 
-    def __init__(self, dir):
-        self.dir = dir
+    def __init__(self, directory, file=None):
+        self.directory = directory
+        if file is not None:
+            self.file = file
+            self.translation_string = 'Yii::t(\''+self.file+'\', \''
+        else:
+            self.translation_string = 'Yii::t(\'app\', \''
 
-    def get_files(self, dir):
-        for filename in os.listdir(dir):
-            fn = dir+'/'+filename
+    def get_files(self, directory=None):
+        if directory is None:
+            directory = self.directory
+        if len(os.listdir(directory)) == 0:
+            Common.exception(2, 'Directory is empty')
+        for filename in os.listdir(directory):
+            fn = directory+'/'+filename
             if os.path.isdir(fn):
                 self.get_files(fn)
 
@@ -23,17 +32,18 @@ class FileReader:
 
         return self.files
 
-    @staticmethod
-    def get_translations(files):
+    def get_translations(self, files=None):
         translations = []
+        if files is None:
+            files = self.get_files()
         for file in files:
-            with open(file, 'r') as content_file:
+            with open(file, 'r', encoding='utf8') as content_file:
                 content = content_file.read()
-                starts = [match.start() for match in re.finditer(re.escape(translation_string), content)]
+                starts = [match.start() for match in re.finditer(re.escape(self.translation_string), content)]
                 if len(starts) != 0:
                     for start in starts:
-                        end = content.find('\'', start+len(translation_string))
-                        translations.append(content[start+len(translation_string):end])
+                        end = content.find('\'', start+len(self.translation_string))
+                        translations.append(content[start+len(self.translation_string):end])
 
         return translations
 
